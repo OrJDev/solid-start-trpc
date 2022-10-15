@@ -1,8 +1,13 @@
 import { AnyRouter, inferRouterContext, Dict } from "@trpc/server";
-import { APIEvent } from "solid-start/api/types";
 
+export type createSolidAPIHandlerContext = {
+  req: Request;
+  res: {
+    headers?: Dict<string | string[]>;
+  };
+};
 export type CreateContextFn<TRouter extends AnyRouter> = (
-  APIArgs: APIEvent
+  ctx: createSolidAPIHandlerContext
 ) => inferRouterContext<TRouter> | Promise<inferRouterContext<TRouter>>;
 
 export type ICreateProps<TRouter extends AnyRouter> = {

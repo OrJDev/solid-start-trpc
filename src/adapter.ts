@@ -1,6 +1,10 @@
-import { resolveHTTPResponse, AnyRouter } from "@trpc/server";
+import { resolveHTTPResponse, AnyRouter, Dict } from "@trpc/server";
 import { APIEvent, ApiHandler } from "solid-start/api/types";
-import { CreateContextFn, IFixedRequest } from "./types";
+import {
+  CreateContextFn,
+  createSolidAPIHandlerContext,
+  IFixedRequest,
+} from "./types";
 import { getPath, notFoundError } from "./utils";
 
 export function createSolidAPIHandler<TRouter extends AnyRouter>(opts: {
@@ -13,6 +17,9 @@ export function createSolidAPIHandler<TRouter extends AnyRouter>(opts: {
     if (path === null) {
       return notFoundError(opts);
     }
+    const res: createSolidAPIHandlerContext["res"] = {
+      headers: {} as Dict<string | string[]>,
+    };
     const { status, headers, body } = await resolveHTTPResponse({
       router: opts.router,
       req: {
@@ -22,11 +29,17 @@ export function createSolidAPIHandler<TRouter extends AnyRouter>(opts: {
         body: await request.text(),
       },
       path,
-      createContext: async () => await opts.createContext?.(args),
+      createContext: async () =>
+        await opts.createContext?.({
+          req: args.request,
+          res,
+        }),
     });
     return new Response(body, {
       status,
-      headers: headers as Record<string, string>,
+      headers: (headers
+        ? { ...headers, ...res.headers }
+        : res.headers) as Record<string, string>,
     });
   };
 }
