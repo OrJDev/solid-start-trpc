@@ -3,7 +3,7 @@ import { AnyRouter, inferRouterContext, Dict } from "@trpc/server";
 export type createSolidAPIHandlerContext = {
   req: Request;
   res: {
-    headers?: Dict<string | string[]>;
+    headers: Dict<string | string[]>;
   };
 };
 export type CreateContextFn<TRouter extends AnyRouter> = (

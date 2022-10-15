@@ -19,8 +19,8 @@ export function createSolidAPIHandler<TRouter extends AnyRouter>(opts: {
     if (path === null) {
       return notFoundError(opts);
     }
-    const res = {
-      headers: {} as Dict<string | string[]>
+    const res: createSolidAPIHandlerContext["res"] = {
+      headers: {},
     };
     const { status, headers, body } = await resolveHTTPResponse({
       router: opts.router,
@@ -41,7 +41,7 @@ export function createSolidAPIHandler<TRouter extends AnyRouter>(opts: {
     return new Response(body, {
       status,
       headers: (headers
-        ? { ...headers, ...res.headers }
+        ? { ...res.headers, ...headers }
         : res.headers) as Record<string, string>,
     });
   };
