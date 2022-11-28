@@ -1,9 +1,11 @@
-import { AnyRouter, inferRouterContext, Dict } from "@trpc/server";
+import { type AnyRouter, type inferRouterContext } from "@trpc/server";
+import { type ResponseMetaFn } from "@trpc/server/dist/http/internals/types";
 
 export type createSolidAPIHandlerContext = {
   req: Request;
   res: {
-    headers: Dict<string | string[]>;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    headers: Record<string, any>;
   };
 };
 export type CreateContextFn<TRouter extends AnyRouter> = (
@@ -15,6 +17,8 @@ export type ICreateProps<TRouter extends AnyRouter> = {
   createContext: CreateContextFn<TRouter>;
 };
 
-export type IFixedRequest = Request & {
-  headers: Dict<string | string[]>;
+export type ICreateSolidAPIHandlerOpts<TRouter extends AnyRouter> = {
+  router: TRouter;
+  createContext: CreateContextFn<TRouter>;
+  responseMeta?: ResponseMetaFn<TRouter>;
 };

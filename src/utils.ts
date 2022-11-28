@@ -1,7 +1,7 @@
 import { AnyRouter, TRPCError } from "@trpc/server";
 import { TRPCErrorResponse } from "@trpc/server/rpc";
 import { APIEvent } from "solid-start/api/types";
-import { ICreateProps } from "./types";
+import { ICreateSolidAPIHandlerOpts } from "./types";
 
 export function getPath(args: APIEvent): string | null {
   const p: any = args.params.trpc;
@@ -15,7 +15,7 @@ export function getPath(args: APIEvent): string | null {
 }
 
 export function notFoundError<TRouter extends AnyRouter>(
-  opts: ICreateProps<TRouter>
+  opts: ICreateSolidAPIHandlerOpts<TRouter>
 ) {
   const error = opts.router.getErrorShape({
     error: new TRPCError({

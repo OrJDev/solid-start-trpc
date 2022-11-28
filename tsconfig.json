@@ -5,11 +5,12 @@
     "target": "esnext",
     "newLine": "LF",
     "moduleResolution": "node",
-    "strict": true,
+    "strict": false,
     "jsx": "preserve",
     "jsxImportSource": "solid-js",
     "outDir": "./dist",
-    "module": "esnext"
+    "module": "esnext",
+    "types": ["node", "vite/client"]
   },
   "include": ["./src"],
   "exclude": ["node_modules", "dist"]
